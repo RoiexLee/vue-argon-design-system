@@ -52,24 +52,24 @@
                 </div>
             </div>
         </div>
+        <modal :show.sync="showModal">
+            <h6 slot="header" class="modal-title" id="modal-title-default">提示</h6>
+            <p>请输入邮箱和密码。</p>
+            <base-button type="info" @click="showModal=false">关闭</base-button>
+        </modal>
     </section>
 </template>
 <script>
 import {mapActions} from "vuex";
+import Modal from "@/components/Modal.vue";
 
 export default {
-    data() {
-        return {
-            email: "",
-            password: "",
-            remember: false
-        }
-    },
+    components: {Modal},
     methods: {
         ...mapActions(["login"]),
         loginUser() {
             if (!this.email || !this.password) {
-                alert("请输入邮箱和密码");
+                this.showModal = true;
             } else {
                 this.login({
                     email: this.email,
@@ -77,6 +77,14 @@ export default {
                     remember: this.remember
                 });
             }
+        }
+    },
+    data() {
+        return {
+            email: "",
+            password: "",
+            remember: false,
+            showModal: false
         }
     }
 };

@@ -22,7 +22,7 @@
                             <form role="form" @submit.prevent="registerUser">
                                 <base-input class="mb-3"
                                             placeholder="用户名"
-                                            addon-left-icon="ni ni-hat-3" v-model="name">
+                                            addon-left-icon="ni ni-hat-3" v-model="username">
                                 </base-input>
                                 <base-input class="mb-3"
                                             placeholder="邮箱"
@@ -45,32 +45,48 @@
                 </div>
             </div>
         </div>
+        <modal :show.sync="showModal1">
+            <h6 slot="header" class="modal-title" id="modal-title-default">提示</h6>
+            <p>请填写所有信息。</p>
+            <base-button type="info" @click="showModal1=false">关闭</base-button>
+        </modal>
+        <modal :show.sync="showModal2">
+            <h6 slot="header" class="modal-title" id="modal-title-default">提示</h6>
+            <p>请同意隐私政策。</p>
+            <base-button type="info" @click="showModal2=false">关闭</base-button>
+        </modal>
     </section>
 </template>
 <script>
 import {mapActions} from "vuex";
+import Modal from "@/components/Modal.vue";
 
 export default {
-    data() {
-        return {
-            name: "",
-            email: "",
-            password: "",
-            agreeToPrivacyPolicy: false
-        }
-    },
+    components: {Modal},
     methods: {
         ...mapActions(["register"]),
         registerUser() {
-            if (!this.agreeToPrivacyPolicy) {
-                alert("你必须同意隐私政策");
+            if (!this.username || !this.email || !this.password) {
+                this.showModal1 = true;
+            } else if (!this.agreeToPrivacyPolicy) {
+                this.showModal2 = true;
             } else {
                 this.register({
-                    name: this.name,
+                    name: this.username,
                     email: this.email,
                     password: this.password
                 });
             }
+        }
+    },
+    data() {
+        return {
+            username: "",
+            email: "",
+            password: "",
+            agreeToPrivacyPolicy: false,
+            showModal1: false,
+            showModal2: false
         }
     }
 };

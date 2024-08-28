@@ -13,41 +13,147 @@
         <div class="container pt-lg-md">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <card type="secondary" shadow header-classes="bg-white pb-5" body-classes="px-lg-5 py-lg-5"
+                    <card v-if="this.state===0" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
                           class="border-0">
-                        <div class="text-center">
-                            <h1>欢迎参加我们的实验</h1>
-                        </div>
-                        <div>
-                            <p>
-                                您好，我们是合肥工业大学计算机与信息学院媒体计算实验室的研究团队，欢迎参加我们的实验。现在我来简单告知您实验的流程和相关信息。</p>
-                            <p>
-                                本实验目的是采集不同被试的多种模态数据，实验分为两个阶段。
-                            </p>
-                            <p>
-                                第一个阶段有三个小任务，分别是观看视频片段、回答5个开放式问题和观看墨迹图，在这个过程中需要根据指示进行反应，并且全程会对您进行录音和录像。
-                            </p>
-                            <p>
-                                第二个阶段是填写一份心理学量表，数据采集全过程请您尽量保持放松的状态，按照真实情况回答问题。
-                            </p>
-                            <p>
-                                在整个实验过程中，您有随时退出实验的自由，同时，我们会对您的信息和数据进行隐私保护，数据仅用于科研用途。
-                            </p>
-                            <p class="font-weight-bold">
-                                如果您已充分了解本数据采集的相关信息并愿意进行数据采集工作，请在下方区域内签名。
-                            </p>
-                        </div>
-                        <div class="signature-container text-center">
-                            <canvas ref="signatureCanvas" class="signature-canvas" style="border: 2px solid #000000"
-                                    width="200%" height="100%"></canvas>
-                            <div class="signature-controls mt-3">
-                                <base-button type="secondary" @click="clearSignature">清除</base-button>
-                                <base-button type="primary" @click="saveSignature">确定</base-button>
-                            </div>
+                        <Announcement @finish="updateState(1)"></Announcement>
+                    </card>
+                    <card v-else-if="this.state===1" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <Watch @finish="updateState(2)"></Watch>
+                    </card>
+                    <card v-else-if="this.state===2" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <h1 class="text-center mt-3 mb-3">步骤二 回答问题</h1>
+                        <p>
+                            我们将会依次询问您5个问题。在每个问题陈述完毕后，您将有30秒的时间进行思考。
+                        </p>
+                        <p>
+                            思考时间结束后，你将有3分钟的时间回答，时间会显示在屏幕上。你也可以点击结束按钮提前结束思考和回答时间。
+                        </p>
+                        <p>
+                            每个问题的答案无对错之分，不带有任何评价意义，你可以自由表达。希望您表达的尽可能详细且真实。
+                        </p>
+                        <p>
+                            请问你准备好了吗？
+                        </p>
+                        <div class="text-center mt-3 mb-3">
+                            <base-button type="primary" @click="updateState(3)">准备好了</base-button>
                         </div>
                     </card>
+                    <card v-else-if="this.state===3" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <Question title="问题一"
+                                  content="你能告诉我，在过去的生活中，你最美好的记忆或经历过的最美好的事情吗？为什么？"
+                                  :key="1"
+                                  @finish="updateState(4) "></Question>
+                    </card>
+                    <card v-else-if="this.state===4" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <Question title="问题二"
+                                  content="你能告诉我，在过去的生活中，你最痛苦的记忆或经历过的最痛苦的事情吗？为什么？"
+                                  :key="2"
+                                  @finish="updateState(5)"></Question>
+                    </card>
+                    <card v-else-if="this.state===5" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <Question title="问题三"
+                                  content="你能告诉我，在过去的生活中，你最幸福的记忆或经历过的最幸福的事情吗？为什么？"
+                                  :key="3"
+                                  @finish="updateState(6)"></Question>
+                    </card>
+                    <card v-else-if="this.state===6" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <Question title="问题四"
+                                  content="你能告诉我，在过去的生活中，你最激动的记忆或经历过的最激动的事情吗？为什么？"
+                                  :key="4"
+                                  @finish="updateState(7)"></Question>
+                    </card>
+                    <card v-else-if="this.state===7" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <Question title="问题五"
+                                  content="你能告诉我，在过去的生活中，你最悲伤的记忆或经历过的最悲伤的事情吗？为什么？"
+                                  :key="5"
+                                  @finish="updateState(8)"></Question>
+                    </card>
+                    <card v-else-if="this.state===8" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <h1 class="text-center mt-3 mb-3">步骤三 墨迹测试</h1>
+                        <p>
+                            根据给出的墨迹图像，描述所看见的东西，说出您看到了什么，包括颜色、形状和可能的情感或故事，让您联想到某个特定的物体、事件或感觉。
+                        </p>
+                        <p>思考时间60s，回答时间180s。</p>
+                        <p>例如</p>
+                        <div class="text-center mt-3 mb-3">
+                            <img src="img/exm/rorschach.png" alt="墨迹图" class="img-fluid rounded shadow" width="80%">
+                        </div>
+                        <p class="mt-1 mb-1">这张图中我觉得中间的部分像是一张面具，有点像是戏剧中的面具。</p>
+                        <p class="mt-1 mb-1">
+                            它的上方有类似于眼睛的图形，中间有一个倒三角形状的鼻子，以及上翘的形状似乎在暗示一个微笑。</p>
+                        <p class="mt-1 mb-1">
+                            周围的图形让我联想到了动物的翅膀，特别像是夜晚飞翔的蝙蝠，因为它们有一种流畅而又对称的外形。</p>
+                        <p class="mt-1 mb-1">墨迹的边缘有些地方像是羽毛或者毛发般细腻，增加了一种自然的质感。</p>
+                        <p class="mt-1 mb-1">而墨迹图的整体布局对称，让我感觉图中的形象在平衡中寻找着秩序。</p>
+                        <p class="mt-1 mb-1">总的来说，这张图给我的感觉是既神秘又有生命力的。</p>
+                        <div class="text-center mt-3 mb-3">
+                            <base-button type="primary" @click="updateState(9)">开始测试</base-button>
+                        </div>
+                    </card>
+                    <card v-else-if="this.state===9" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <Rorschach title="墨迹测试一"
+                                   image="img/exm/rorschach.png"
+                                   :key="0"
+                                   @finish="updateState(10)"></Rorschach>
+                    </card>
+                    <card v-else-if="this.state===10" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <Rorschach title="墨迹测试二"
+                                   image="img/exm/rorschach.png"
+                                   :key="1"
+                                   @finish="updateState(11)"></Rorschach>
+                    </card>
+                    <card v-else-if="this.state===11" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <Rorschach title="墨迹测试三"
+                                   image="img/exm/rorschach.png"
+                                   :key="2"
+                                   @finish="updateState(12)"></Rorschach>
+                    </card>
+                    <card v-else-if="this.state===12" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <h1 class="text-center mt-3 mb-3">步骤四 填写量表</h1>
+                        <p>恭喜你！你已经完成了视听数据采集的基本工作，只剩下最后一步，填写一份量表的任务就完成了！</p>
+                        <p>现在你需要填写一份人格问卷，它一共有60个问题，完成时间在10分钟以内。</p>
+                        <p>希望你能够认真作答。填写结束之后会显示你在每个人格维度上的分数，这有助于你加深对自己的了解。</p>
+                        <p>如果你准备好了，点击下面的按钮，我们就可以开始了。</p>
+                        <div class="text-center mt-3 mb-3">
+                            <base-button type="primary" @click="updateState(13)">准备好了</base-button>
+                        </div>
+                    </card>
+                    <card v-else-if="this.state===13" shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="border-0">
+                        <Scale @finish="showModal=true"></Scale>
+                    </card>
+                    <modal :show.sync="showModal">
+                        <h6 slot="header" class="modal-title" id="modal-title-default">提示</h6>
+                        <p>恭喜你已完成本数据采集任务，非常感谢你的参与与配合，人格评测结果及志愿奖励将于审核通过后发放。</p>
+                        <base-button type="info" @click="exit">返回首页</base-button>
+                    </modal>
                 </div>
-
             </div>
         </div>
     </section>
@@ -55,53 +161,38 @@
 
 </template>
 <script>
+import Announcement from "@/views/custom/announcement.vue";
+import Watch from "@/views/custom/watch.vue";
+import Question from "@/views/custom/question.vue";
+import Rorschach from "@/views/custom/rorschach.vue";
+import Scale from "@/views/custom/scale.vue";
+import Modal from "@/components/Modal.vue";
+
 export default {
-    data() {
-        return {
-            isDrawing: false,
-            context: null
-        };
-    },
-    mounted() {
-        const canvas = this.$refs.signatureCanvas;
-        this.context = canvas.getContext("2d");
-        this.setupCanvas();
+    components: {
+        Modal,
+        Announcement,
+        Watch,
+        Question,
+        Rorschach,
+        Scale
     },
     methods: {
-        setupCanvas() {
-            this.context.strokeStyle = "#000000";
-            this.context.lineWidth = 2;
-            this.context.lineCap = "round";
-
-            this.$refs.signatureCanvas.addEventListener("mousedown", this.startDrawing);
-            this.$refs.signatureCanvas.addEventListener("mousemove", this.draw);
-            this.$refs.signatureCanvas.addEventListener("mouseup", this.stopDrawing);
-            this.$refs.signatureCanvas.addEventListener("mouseleave", this.stopDrawing);
+        updateState(state) {
+            this.state = state;
         },
-        startDrawing(event) {
-            this.isDrawing = true;
-            this.context.beginPath();
-            this.context.moveTo(event.offsetX, event.offsetY);
-        },
-        draw(event) {
-            if (!this.isDrawing) return;
-            this.context.lineTo(event.offsetX, event.offsetY);
-            this.context.stroke();
-        },
-        stopDrawing() {
-            if (!this.isDrawing) return;
-            this.isDrawing = false;
-            this.context.closePath();
-        },
-        clearSignature() {
-            this.context.clearRect(0, 0, this.$refs.signatureCanvas.width, this.$refs.signatureCanvas.height);
-        },
-        saveSignature() {
-            const dataURL = this.$refs.signatureCanvas.toDataURL();
-            console.log("Signature data URL:", dataURL);
-            // 这里可以将签名图像数据上传到服务器或者其他处理
+        exit() {
+            this.state = 0;
+            this.showModal = false;
+            this.$router.push("/");
         }
-    }
+    },
+    data() {
+        return {
+            state: 0,
+            showModal: false
+        };
+    },
 };
 </script>
 <style>

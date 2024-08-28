@@ -18,41 +18,21 @@
                           body-classes="px-lg-5 py-lg-5"
                           class="border-0">
                         <template>
-                            <div class="text-muted text-center mb-3">
-                                <small>Sign in with</small>
-                            </div>
-                            <div class="btn-wrapper text-center">
-                                <base-button type="neutral">
-                                    <img slot="icon" src="img/icons/common/github.svg">
-                                    Github
-                                </base-button>
-
-                                <base-button type="neutral">
-                                    <img slot="icon" src="img/icons/common/google.svg">
-                                    Google
-                                </base-button>
-                            </div>
-                        </template>
-                        <template>
                             <div class="text-center text-muted mb-4">
-                                <small>Or sign in with credentials</small>
+                                <small>使用身份登录</small>
                             </div>
-                            <form role="form">
-                                <base-input alternative
-                                            class="mb-3"
-                                            placeholder="Email"
-                                            addon-left-icon="ni ni-email-83">
+                            <form role="form" @submit.prevent="loginUser">
+                                <base-input class="mb-3"
+                                            placeholder="邮箱"
+                                            addon-left-icon="ni ni-email-83" v-model="email">
                                 </base-input>
-                                <base-input alternative
-                                            type="password"
-                                            placeholder="Password"
-                                            addon-left-icon="ni ni-lock-circle-open">
+                                <base-input type="password"
+                                            placeholder="密码"
+                                            addon-left-icon="ni ni-lock-circle-open" v-model="password">
                                 </base-input>
-                                <base-checkbox>
-                                    Remember me
-                                </base-checkbox>
+                                <base-checkbox v-model="remember">记住我</base-checkbox>
                                 <div class="text-center">
-                                    <base-button type="primary" class="my-4">Sign In</base-button>
+                                    <base-button type="primary" class="my-4" @click="loginUser">登录</base-button>
                                 </div>
                             </form>
                         </template>
@@ -60,12 +40,12 @@
                     <div class="row mt-3">
                         <div class="col-6">
                             <a href="#" class="text-light">
-                                <small>Forgot password?</small>
+                                <small>忘记密码</small>
                             </a>
                         </div>
                         <div class="col-6 text-right">
                             <a href="#" class="text-light">
-                                <small>Create new account</small>
+                                <small>注册账号</small>
                             </a>
                         </div>
                     </div>
@@ -75,7 +55,31 @@
     </section>
 </template>
 <script>
-export default {};
+import {mapActions} from "vuex";
+
+export default {
+    data() {
+        return {
+            email: "",
+            password: "",
+            remember: false
+        }
+    },
+    methods: {
+        ...mapActions(["login"]),
+        loginUser() {
+            if (!this.email || !this.password) {
+                alert("请输入邮箱和密码");
+            } else {
+                this.login({
+                    email: this.email,
+                    password: this.password,
+                    remember: this.remember
+                });
+            }
+        }
+    }
+};
 </script>
 <style>
 </style>

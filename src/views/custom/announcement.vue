@@ -87,7 +87,6 @@ export default {
                 this.showModal = true;
             } else {
                 const dataURL = canvas.toDataURL();
-                console.log("Signature data URL:", dataURL);
                 // 这里可以将签名图像数据上传到服务器或者其他处理
                 this.$emit("finish");
             }

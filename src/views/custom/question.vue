@@ -5,15 +5,15 @@
         <div v-if="this.questionState===0">
             <p>现在你有30秒的时间可以思考。</p>
             <div class="text-center mt-3 mb-3">
-                <Timer :total-seconds="30" :key="0" @finish="updateQuestionState"></Timer>
-                <base-button type="primary" @click="updateQuestionState">结束思考</base-button>
+                <Timer :total-seconds="30" :middle-seconds="20" :key="0" @middle="updateButton" @finish="updateQuestionState"></Timer>
+                <base-button type="primary" @click="updateQuestionState" v-if="showButton1">结束思考</base-button>
             </div>
         </div>
         <div v-else-if="this.questionState===1">
             <p>现在你有180秒的时间可以回答。</p>
             <div class="text-center mt-3 mb-3">
-                <Timer :total-seconds="180" :key="1" @finish="updateQuestionState"></Timer>
-                <base-button type="primary" @click="updateQuestionState">结束回答</base-button>
+                <Timer :total-seconds="180" :middle-seconds="120" :key="1" @middle="updateButton" @finish="updateQuestionState"></Timer>
+                <base-button type="primary" @click="updateQuestionState" v-if="showButton2">结束回答</base-button>
             </div>
         </div>
     </section>
@@ -34,6 +34,13 @@ export default {
             } else {
                 this.$emit("finish");
             }
+        },
+        updateButton() {
+            if (this.questionState === 0) {
+                this.showButton1 = true;
+            } else {
+                this.showButton2 = true;
+            }
         }
     },
     props: {
@@ -49,7 +56,8 @@ export default {
     data() {
         return {
             questionState: 0,
-            timerKey: 0
+            showButton1: false,
+            showButton2: false
         }
     }
 }

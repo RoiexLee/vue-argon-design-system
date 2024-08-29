@@ -10,15 +10,15 @@
         <div v-if="this.rorschachState===0">
             <p>现在你有60秒的时间可以思考。</p>
             <div class="text-center mt-3 mb-3">
-                <Timer :total-seconds="60" :key="0" @finish="updateRorschachState"></Timer>
-                <base-button type="primary" @click="updateRorschachState">结束思考</base-button>
+                <Timer :total-seconds="60" :middle-seconds="40" :key="0" @middle="updateButton" @finish="updateRorschachState"></Timer>
+                <base-button type="primary" @click="updateRorschachState" v-if="showButton1">结束思考</base-button>
             </div>
         </div>
         <div v-else-if="this.rorschachState===1">
             <p>现在你有180秒的时间可以回答。</p>
             <div class="text-center mt-3 mb-3">
-                <Timer :total-seconds="180" :key="1" @finish="updateRorschachState"></Timer>
-                <base-button type="primary" @click="updateRorschachState">结束回答</base-button>
+                <Timer :total-seconds="180" :middle-seconds="120" :key="1" @middle="updateButton" @finish="updateRorschachState"></Timer>
+                <base-button type="primary" @click="updateRorschachState" v-if="showButton2">结束回答</base-button>
             </div>
         </div>
     </section>
@@ -39,6 +39,13 @@ export default {
             } else if (this.rorschachState === 1) {
                 this.$emit("finish");
             }
+        },
+        updateButton(){
+            if (this.rorschachState === 0) {
+                this.showButton1 = true;
+            } else {
+                this.showButton2 = true;
+            }
         }
     },
     props: {
@@ -54,7 +61,8 @@ export default {
     data() {
         return {
             rorschachState: 0,
-            timerKey: 0
+            showButton1: false,
+            showButton2: false
         }
     }
 }

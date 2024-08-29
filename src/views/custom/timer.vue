@@ -11,6 +11,7 @@ export default {
             remainingSeconds: this.totalSeconds,
             interval: null,
             isRunning: false,
+            middleTriggered: false
         };
     },
     mounted() {
@@ -36,6 +37,12 @@ export default {
                         this.$emit("finish");
                         return;
                     }
+
+                    if (!this.middleTriggered && this.remainingSeconds === this.remainingSeconds) {
+                        this.$emit("middle");
+                        this.middleTriggered = true;
+                    }
+
                     this.remainingSeconds--;
                 }, 1000);
             }
@@ -43,12 +50,17 @@ export default {
         resetTimer() {
             clearInterval(this.interval);
             this.isRunning = false;
+            this.middleTriggered = false;
         }
     },
     props: {
         totalSeconds: {
             type: Number,
             default: 60
+        },
+        middleSeconds: {
+            type: Number,
+            default: 30
         }
     }
 };

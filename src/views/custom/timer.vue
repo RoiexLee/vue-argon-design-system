@@ -46,11 +46,6 @@ export default {
                     this.remainingSeconds--;
                 }, 1000);
             }
-        },
-        resetTimer() {
-            clearInterval(this.interval);
-            this.isRunning = false;
-            this.middleTriggered = false;
         }
     },
     props: {

@@ -12,6 +12,13 @@
         </div>
         <div class="container pt-lg-md">
             <div class="row justify-content-center">
+                <div class="col-lg-4" v-if="state > 0 && state < 20">
+                    <card shadow header-classes="bg-white"
+                          body-classes="px-lg-5 py-lg-5"
+                          class="text-center border-0 mt-1 mb-1">
+                        <video ref="video" width="100%" autoplay muted></video>
+                    </card>
+                </div>
                 <div class="col-lg-8">
                     <card v-if="state === 0" shadow header-classes="bg-white"
                           body-classes="px-lg-5 py-lg-5"
@@ -24,12 +31,6 @@
                         <p>请在下方区域内签名。</p>
                         <base-button type="info" @click="showModalAnnouncement=false;">关闭</base-button>
                     </modal>
-                    <card v-if="state > 0 && state < 20" shadow header-classes="bg-white"
-                          body-classes="px-lg-5 py-lg-5"
-                          class="text-center border-0 mt-1 mb-1">
-                        <video ref="video" width="80%" autoplay muted></video>
-                        <a :href="downloadLink" download="recording.webm" v-if="downloadLink">Download Video</a>
-                    </card>
                     <card v-if="state === 1" shadow header-classes="bg-white"
                           body-classes="px-lg-5 py-lg-5"
                           class="border-0 mt-1 mb-1">
@@ -474,7 +475,7 @@
                         <Question :key="15"
                                   :total-seconds="180"
                                   :middle-seconds="120"
-                                  @finish="state=20; stopRecording;">
+                                  @finish="state=20; stopRecording();">
                             <template v-slot:title>
                                 <h1 class="text-center mt-3 mb-3">
                                     墨迹测试三
@@ -577,7 +578,12 @@ export default {
 
                 this.mediaRecorder.onstop = () => {
                     const blob = new Blob(this.recordedChunks, {type: "video/webm"});
-                    this.downloadLink = URL.createObjectURL(blob);
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = URL.createObjectURL(blob);
+                    downloadLink.download = "recording.webm";
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
                 };
 
                 this.mediaRecorder.start();
@@ -598,8 +604,7 @@ export default {
             showModalScaleEmpty: false,
             showModalScaleFinish: false,
             mediaRecorder: null,
-            recordedChunks: [],
-            downloadLink: null
+            recordedChunks: []
         };
     },
 };

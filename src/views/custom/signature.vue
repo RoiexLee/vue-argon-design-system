@@ -78,6 +78,10 @@ export default {
                 this.$emit("empty");
             } else {
                 const dataURL = canvas.toDataURL();
+                const a = document.createElement("a");
+                a.href = dataURL;
+                a.download = "signature.png";
+                a.click();
                 // 这里可以将签名图像数据上传到服务器或者其他处理
                 this.$emit("finish");
             }
@@ -120,7 +124,7 @@ export default {
         const canvas = this.$refs.signatureCanvas;
         this.context = canvas.getContext("2d");
         this.setupCanvas();
-    },
+    }
 }
 </script>
 

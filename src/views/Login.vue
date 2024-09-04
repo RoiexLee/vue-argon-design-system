@@ -21,10 +21,10 @@
                             <div class="text-center text-muted mb-4">
                                 <small>使用身份登录</small>
                             </div>
-                            <form role="form" @submit.prevent="loginUser">
+                            <form role="form" @submit.prevent="loginUser()">
                                 <base-input class="mb-3"
-                                            placeholder="邮箱"
-                                            addon-left-icon="ni ni-email-83" v-model="email">
+                                            placeholder="用户名"
+                                            addon-left-icon="ni ni-hat-3" v-model="username">
                                 </base-input>
                                 <base-input type="password"
                                             placeholder="密码"
@@ -32,7 +32,7 @@
                                 </base-input>
                                 <base-checkbox v-model="remember">记住我</base-checkbox>
                                 <div class="text-center">
-                                    <base-button type="primary" class="my-4" @click="loginUser">登录</base-button>
+                                    <base-button type="primary" class="my-4" @click="loginUser()">登录</base-button>
                                 </div>
                             </form>
                         </template>
@@ -52,39 +52,63 @@
                 </div>
             </div>
         </div>
-        <modal :show.sync="showModal">
+        <modal :show.sync="showModal1">
             <h6 slot="header" class="modal-title" id="modal-title-default">提示</h6>
-            <p>请输入邮箱和密码。</p>
-            <base-button type="info" @click="showModal=false">关闭</base-button>
+            <p>请完善信息</p>
+            <base-button type="info" @click="showModal1=false">关闭</base-button>
+        </modal>
+        <modal :show.sync="showModal2">
+            <h6 slot="header" class="modal-title" id="modal-title-default">提示</h6>
+            <p>登陆成功，三秒后跳转</p>
+            <base-button type="info" @click="showModal2=false">关闭</base-button>
+        </modal>
+        <modal :show.sync="showModal3">
+            <h6 slot="header" class="modal-title" id="modal-title-default">提示</h6>
+            <p>登陆失败</p>
+            <base-button type="info" @click="showModal3=false">关闭</base-button>
         </modal>
     </section>
 </template>
 <script>
-import {mapActions} from "vuex";
 import Modal from "@/components/Modal.vue";
+import axios from "axios";
+import Store from "@/store";
 
 export default {
     components: {Modal},
     methods: {
-        ...mapActions(["login"]),
-        loginUser() {
-            if (!this.email || !this.password) {
-                this.showModal = true;
+        async loginUser() {
+            if (!this.username || !this.password) {
+                this.showModal1 = true;
             } else {
-                this.login({
-                    email: this.email,
-                    password: this.password,
-                    remember: this.remember
-                });
+                await axios.post("/user/login", {
+                    username: this.username,
+                    password: this.password
+                }).then(
+                    response => {
+                        if (response.data.code === 1) {
+                            Store.commit("setToken", response.data.date);
+                            this.showModal2 = true;
+                            setTimeout(() => {
+                                this.showModal2 = false;
+                                this.$router.push("/");
+                            }, 3000);
+                        } else {
+                            this.showModal3 = true;
+                        }
+                    }
+                )
             }
         }
     },
     data() {
         return {
-            email: "",
+            username: "",
             password: "",
             remember: false,
-            showModal: false
+            showModal1: false,
+            showModal2: false,
+            showModal3: false
         }
     }
 };

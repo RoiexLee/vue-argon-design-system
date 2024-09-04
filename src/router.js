@@ -67,15 +67,6 @@ export default new Router({
                 default: Collection,
                 footer: AppFooter
             }
-        },
-        {
-            path: "/camera",
-            name: "camera",
-            components: {
-                header: AppHeader,
-                default: () => import("./views/Camera.vue"),
-                footer: AppFooter
-            }
         }
     ],
     scrollBehavior: to => {

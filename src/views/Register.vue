@@ -67,7 +67,6 @@
 <script>
 import Modal from "@/components/Modal.vue";
 import axios from "axios";
-import Store from "@/store";
 
 export default {
     components: {Modal},
@@ -79,19 +78,17 @@ export default {
                 this.showModal2 = true;
             } else {
                 await axios.post(
-                    "http://localhost:3000/users",
+                    "/user/register",
                     {
                         username: this.username,
                         password: this.password
                     }
                 ).then(
                     response => {
-                        if (response.data.code === 1) {
-                            Store.commit("setToken", response.data.date);
+                        if (response.status === 200) {
                             this.showModal3 = true;
                             setTimeout(() => {
-                                this.showModal3 = false;
-                                this.$router.push("/");
+                                this.$router.push("/login");
                             }, 3000);
                         } else {
                             this.showModal4 = true;

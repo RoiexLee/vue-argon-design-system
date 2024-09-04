@@ -18,11 +18,11 @@ module.exports = {
     }, devServer: {
         proxy: {
             "/api": {
-                target: "http://8.217.178.255::8080/", changeOrigin: true,
+                target: "http://127.0.0.1:8000", changeOrigin: true,
                 pathRewrite: {
                     "^/api": ""
                 }
             }
         }
-    }
+    }, publicPath: "/"
 };

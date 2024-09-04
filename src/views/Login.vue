@@ -81,13 +81,22 @@ export default {
             if (!this.username || !this.password) {
                 this.showModal1 = true;
             } else {
-                await axios.post("/user/login", {
-                    username: this.username,
-                    password: this.password
-                }).then(
+                await axios.post(
+                    "/api/user/login",
+                    {
+                        username: this.username,
+                        password: this.password,
+                        remember: this.remember
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json"
+                            }
+                    }
+                ).then(
                     response => {
-                        if (response.data.code === 1) {
-                            Store.commit("setToken", response.data.date);
+                        if(response.status === 200) {
+                            Store.commit("setAccessToken", response.data.access_token);
                             this.showModal2 = true;
                             setTimeout(() => {
                                 this.showModal2 = false;

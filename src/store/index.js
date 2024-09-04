@@ -5,12 +5,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        token: null
+        access_token: null
     }, mutations: {
-        setToken(state, token) {
-            state.token = token
+        setAccessToken(state, token) {
+            state.access_token = token
         }
     }, getters: {
-        isAuthenticated: state => !!state.token
+        isAuthenticated: state => !!state.access_token
     }
 });

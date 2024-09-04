@@ -37,35 +37,13 @@
                             </form>
                         </template>
                     </card>
-                    <div class="row mt-3">
-                        <div class="col-6">
-                            <a href="#" class="text-light">
-                                <small>忘记密码</small>
-                            </a>
-                        </div>
-                        <div class="col-6 text-right">
-                            <a href="#" class="text-light">
-                                <small>注册账号</small>
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-        <modal :show.sync="showModal1">
+        <modal :show.sync="showModal">
             <h6 slot="header" class="modal-title" id="modal-title-default">提示</h6>
-            <p>请完善信息</p>
-            <base-button type="info" @click="showModal1=false">关闭</base-button>
-        </modal>
-        <modal :show.sync="showModal2">
-            <h6 slot="header" class="modal-title" id="modal-title-default">提示</h6>
-            <p>登陆成功，三秒后跳转</p>
-            <base-button type="info" @click="showModal2=false">关闭</base-button>
-        </modal>
-        <modal :show.sync="showModal3">
-            <h6 slot="header" class="modal-title" id="modal-title-default">提示</h6>
-            <p>登陆失败</p>
-            <base-button type="info" @click="showModal3=false">关闭</base-button>
+            <p>{{ message }}</p>
+            <base-button type="info" @click="showModal=false">关闭</base-button>
         </modal>
     </section>
 </template>
@@ -79,34 +57,41 @@ export default {
     methods: {
         async loginUser() {
             if (!this.username || !this.password) {
-                this.showModal1 = true;
+                this.showModal = true;
+                this.message = "请填写所有信息";
             } else {
-                await axios.post(
-                    "/api/user/login",
-                    {
-                        username: this.username,
-                        password: this.password,
-                        remember: this.remember
-                    },
-                    {
-                        headers: {
-                            "Content-Type": "application/json"
+                try {
+                    await axios.post(
+                        "/user/login",
+                        {
+                            username: this.username,
+                            password: this.password,
+                            remember: this.remember
+                        },
+                        {
+                            headers: {
+                                "Content-Type": "application/json"
                             }
-                    }
-                ).then(
-                    response => {
-                        if(response.status === 200) {
-                            Store.commit("setAccessToken", response.data.access_token);
-                            this.showModal2 = true;
-                            setTimeout(() => {
-                                this.showModal2 = false;
-                                this.$router.push("/");
-                            }, 3000);
-                        } else {
-                            this.showModal3 = true;
                         }
-                    }
-                )
+                    ).then(
+                        response => {
+                            if (response.status === 200) {
+                                Store.state.accessToken = response.data["access_token"];
+                                this.showModal = true;
+                                this.message = "登陆成功，三秒后跳转";
+                                setTimeout(() => {
+                                    this.$router.push("/");
+                                }, 3000);
+                            } else {
+                                this.showModal = true;
+                                this.message = "登陆失败";
+                            }
+                        }
+                    )
+                } catch (e) {
+                    this.showModal = true;
+                    this.message = e.response.data["detail"];
+                }
             }
         }
     },
@@ -115,9 +100,8 @@ export default {
             username: "",
             password: "",
             remember: false,
-            showModal1: false,
-            showModal2: false,
-            showModal3: false
+            showModal: false,
+            message: ""
         }
     }
 };

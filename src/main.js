@@ -21,7 +21,9 @@ import router from "./router";
 import Argon from "./plugins/argon-kit";
 import './registerServiceWorker'
 import store from "./store";
+import axios from "axios";
 
+axios.defaults.baseURL = "/api";
 Vue.config.productionTip = false;
 Vue.use(Argon);
 new Vue({

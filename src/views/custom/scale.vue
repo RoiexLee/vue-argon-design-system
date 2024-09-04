@@ -13,7 +13,7 @@
                     </label>
                 </div>
                 <label v-for="option in [1, 2, 3, 4, 5]" :key="option" class="mr-3">
-                    <base-radio :name="'question-' + (currentPage * questionsPerPage + index) + 'option' + option"
+                    <base-radio :name="option"
                                 v-model="answers[currentPage * questionsPerPage + index]">
                         {{ option }}
                     </base-radio>
@@ -59,9 +59,13 @@ export default {
             if (this.answers.length < this.questions.length || this.answers.includes(undefined)) {
                 this.$emit("empty");
             } else {
-                this.$emit("finish");
+                const csv = this.questions.map((question, index) => {
+                    return `${question.text},${this.answers[index]}`;
+                }).join("\n");
+                const blob = new Blob([csv], {type: "text/csv"});
+                const file = new File([blob], "answer.csv", {type: "text/csv"});
+                this.$emit("finish", file);
             }
-
         }
     },
     data() {
@@ -90,6 +94,5 @@ export default {
     }
 };
 </script>
-
 <style scoped>
 </style>

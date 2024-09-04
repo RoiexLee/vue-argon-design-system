@@ -77,13 +77,16 @@ export default {
             if (isEmpty) {
                 this.$emit("empty");
             } else {
-                const dataURL = canvas.toDataURL();
-                const a = document.createElement("a");
-                a.href = dataURL;
-                a.download = "signature.png";
-                a.click();
-                // 这里可以将签名图像数据上传到服务器或者其他处理
-                this.$emit("finish");
+                const dataURL = canvas.toDataURL("image/png");
+                const byteString = atob(dataURL.split(',')[1]);
+                const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+                const arrayBuffer = new Uint8Array(byteString.length);
+                for (let i = 0; i < byteString.length; i++) {
+                    arrayBuffer[i] = byteString.charCodeAt(i);
+                }
+                const blob = new Blob([arrayBuffer], { type: mimeString });
+                const file = new File([blob], "signature.png", { type: "image/png" });
+                this.$emit("finish", file);
             }
         },
         drawName() {

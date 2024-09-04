@@ -19,7 +19,7 @@
                         <h1 class="text-white">自动人格评测系统</h1>
                         <p class="text-white mt-5 mb-5">A beautiful Design System for Bootstrap 4. It's Free and Open
                             Source.</p>
-                        <div class="btn-wrapper" v-if="isAuthenticated">
+                        <div class="btn-wrapper" v-if="isAuthenticated()">
                             <router-link to="/profile">
                                 <base-button tag="a"
                                              class="text-white mr-3 ml-3"
@@ -57,22 +57,6 @@
                         </div>
                     </div>
                 </div>
-                <!--                <div class="row align-items-center justify-content-around stars-and-coded">-->
-                <!--                    <div class="col-sm-4">-->
-                <!--                        <span class="text-white alpha-7 ml-3">Star us on</span>-->
-                <!--                        <a href="https://github.com/creativetimofficial/argon-design-system" target="_blank"-->
-                <!--                           title="Support us on Github">-->
-                <!--                            <img src="img/brand/github-white-slim.png" style="height: 22px; margin-top: -3px">-->
-                <!--                        </a>-->
-                <!--                    </div>-->
-                <!--                    <div class="col-sm-4 mt-4 mt-sm-0 text-right">-->
-                <!--                        <span class="text-white alpha-7">Coded by</span>-->
-                <!--                        <a href="https://www.creative-tim.com" target="_blank"-->
-                <!--                           title="Creative Tim - Premium Bootstrap Themes and Templates">-->
-                <!--                            <img src="img/brand/creativetim-white-slim.png" class="ml-3" style="height: 30px;">-->
-                <!--                        </a>-->
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
         </div>
     </section>
@@ -81,7 +65,7 @@
 import {mapGetters} from "vuex";
 
 export default {
-    computed: {
+    methods: {
         ...mapGetters(["isAuthenticated"])
     }
 };

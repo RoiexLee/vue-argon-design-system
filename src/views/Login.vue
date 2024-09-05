@@ -50,7 +50,6 @@
 <script>
 import Modal from "@/components/Modal.vue";
 import axios from "axios";
-import Store from "@/store";
 
 export default {
     components: {Modal},
@@ -76,7 +75,7 @@ export default {
                     ).then(
                         response => {
                             if (response.status === 200) {
-                                Store.state.accessToken = response.data["access_token"];
+                                this.$store.commit("SET_ACCESS_TOKEN", response.data["access_token"]);
                                 this.showModal = true;
                                 this.message = "登陆成功，三秒后跳转";
                                 setTimeout(() => {

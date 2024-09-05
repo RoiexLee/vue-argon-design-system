@@ -8,9 +8,11 @@ export default new Vuex.Store({
         accessToken: null
     }, getters: {
         isAuthenticated: state => state.accessToken !== null
-    }, actions: {
-        logout() {
-            this.$store.state.accessToken = null
+    }, mutations: {
+        SET_ACCESS_TOKEN(state, accessToken) {
+            state.accessToken = accessToken;
+        }, CLEAR_ACCESS_TOKEN(state) {
+            state.accessToken = null;
         }
     }
 });

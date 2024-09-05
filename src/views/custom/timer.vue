@@ -10,8 +10,7 @@ export default {
         return {
             remainingSeconds: this.totalSeconds,
             interval: null,
-            isRunning: false,
-            middleTriggered: false
+            isRunning: false
         };
     },
     mounted() {
@@ -37,29 +36,29 @@ export default {
                         this.$emit("finish");
                         return;
                     }
-
-                    if (!this.middleTriggered && this.remainingSeconds === this.remainingSeconds) {
-                        this.$emit("middle");
-                        this.middleTriggered = true;
-                    }
-
                     this.remainingSeconds--;
                 }, 1000);
             }
+        },
+        resetTimer(newTime) {
+            clearInterval(this.interval);
+            this.isRunning = false;
+            this.remainingSeconds = newTime;
+            this.startTimer();
         }
     },
     props: {
         totalSeconds: {
             type: Number,
             default: 60
-        },
-        middleSeconds: {
-            type: Number,
-            default: 30
         }
-    }
+    },
+    watch: {
+        totalSeconds(newVal) {
+            this.resetTimer(newVal);
+        }
+    },
 };
 </script>
-
 <style>
 </style>

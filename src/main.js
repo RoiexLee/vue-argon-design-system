@@ -25,6 +25,22 @@ import axios from "axios";
 
 axios.defaults.baseURL = "/api";
 Vue.config.productionTip = false;
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (store.getters.isAuthenticated) {
+            next();
+        } else {
+            next({
+                path: "/login",
+                query: { redirect: to.fullPath }
+            });
+        }
+    } else {
+        next();
+    }
+});
+
 Vue.use(Argon);
 new Vue({
     store, router, render: h => h(App)

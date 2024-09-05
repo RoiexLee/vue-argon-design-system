@@ -1,9 +1,9 @@
 <template>
     <section>
-        <h1 class="text-center mt-3 mb-3">BFI-2量表</h1>
+        <h1 class="text-center mt-3 mb-3">BFI-2 量表</h1>
         <p>下面是一些关于个人特征的描述，有些可能适用于你，有些可能不适用于你。</p>
         <p>比如，你是否同意“我是一个喜欢与他人待在一起的人”? </p>
-        <p>用1至5描述你对于这些特征的认同程度，1表示非常不认同，5表示非常认同。</p>
+        <p>用 1 至 5 描述你对于这些特征的认同程度，1 表示非常不认同，5 表示非常认同。</p>
 
         <form @submit.prevent="submitForm" class="text-center">
             <div v-for="(question, index) in paginatedQuestions" :key="index" class="mt-3 mb-3">

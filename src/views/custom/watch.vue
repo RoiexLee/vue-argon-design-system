@@ -1,6 +1,7 @@
 <template>
     <section>
         <h1 class="text-center mt-3 mb-3">步骤一 观看视频</h1>
+        <p>你好，现在请观看一组视频片段，时间在10分钟左右。</p>
         <video controls ref="video" width="100%" @pause="updatePlayState(0)" @play="updatePlayState(1)"
                @ended="updatePlayState(2)"
                class="text-center mt-3 mb-3">

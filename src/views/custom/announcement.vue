@@ -2,7 +2,7 @@
     <section>
         <slot name="title"></slot>
         <slot name="content"></slot>
-        <div class="text-center mt-1 mb-1">
+        <div v-if="showButton" class="text-center mt-1 mb-1">
             <base-button type="primary" @click="$emit('finish')">
                 <slot name="end"></slot>
             </base-button>
@@ -12,7 +12,13 @@
 <script>
 
 export default {
-    name: "Announcement"
+    name: "Announcement",
+    props: {
+        showButton: {
+            type: Boolean,
+            default: false
+        }
+    }
 }
 </script>
 <style>

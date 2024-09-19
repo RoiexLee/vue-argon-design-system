@@ -62,8 +62,7 @@ export default {
                 const csv = this.questions.map((question, index) => {
                     return `${question.text},${this.answers[index]}`;
                 }).join("\n");
-                const blob = new Blob([csv], {type: "text/csv"});
-                const file = new File([blob], "answer.csv", {type: "text/csv"});
+                const file = new File([csv], "answer.csv", {type: "text/csv"});
                 this.$emit("finish", file);
             }
         }

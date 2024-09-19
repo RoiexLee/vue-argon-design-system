@@ -30,7 +30,7 @@ export default new Router({
     }, {
         path: "/collection", name: "collection", components: {
             header: AppHeader, default: Collection, footer: AppFooter
-        }, meta: {requiresAuth: true}
+        }, meta: {requiresAuth: false}
     }], scrollBehavior: to => {
         if (to.hash) {
             return {selector: to.hash};

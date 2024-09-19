@@ -8,7 +8,8 @@
 export default {
     data() {
         return {
-            remainingSeconds: this.totalSeconds,
+            localTotalSeconds: this.totalSeconds,
+            localMiddleSeconds: this.middleSeconds,
             interval: null,
             isRunning: false
         };
@@ -18,10 +19,10 @@ export default {
     },
     computed: {
         minutes() {
-            return Math.floor(this.remainingSeconds / 60);
+            return Math.floor(this.localTotalSeconds / 60);
         },
         seconds() {
-            return this.remainingSeconds % 60;
+            return this.localTotalSeconds % 60;
         }
     },
     methods: {
@@ -29,21 +30,27 @@ export default {
             if (!this.isRunning) {
                 this.isRunning = true;
                 this.interval = setInterval(() => {
-                    if (this.remainingSeconds <= 0) {
+                    if (this.localTotalSeconds <= 0) {
                         clearInterval(this.interval);
                         this.isRunning = false;
-                        this.remainingSeconds = 0;
+                        this.localTotalSeconds = 0;
                         this.$emit("finish");
                         return;
                     }
-                    this.remainingSeconds--;
+
+                    if (this.localTotalSeconds === this.localMiddleSeconds) {
+                        this.$emit("middle");
+                    }
+
+                    this.localTotalSeconds--;
                 }, 1000);
             }
         },
-        resetTimer(newTime) {
+        resetTimer(newTotalSeconds, newMiddleSeconds) {
             clearInterval(this.interval);
             this.isRunning = false;
-            this.remainingSeconds = newTime;
+            this.localTotalSeconds = newTotalSeconds;
+            this.localMiddleSeconds = newTotalSeconds - 1;
             this.startTimer();
         }
     },
@@ -51,13 +58,12 @@ export default {
         totalSeconds: {
             type: Number,
             default: 60
+        },
+        middleSeconds: {
+            type: Number,
+            default: 30
         }
-    },
-    watch: {
-        totalSeconds(newVal) {
-            this.resetTimer(newVal);
-        }
-    },
+    }
 };
 </script>
 <style>

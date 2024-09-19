@@ -590,94 +590,94 @@ export default {
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 3) {
-                this.setTimes("questionOneThink");
+                this.setTimes("questionAnnouncement");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(30, 15);
             } else if (state === 4) {
-                this.setTimes("questionOneAnswer");
+                this.setTimes("questionOneThink");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 5) {
-                this.setTimes("questionTwoThink");
+                this.setTimes("questionOneAnswer");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(30, 15);
             } else if (state === 6) {
-                this.setTimes("questionTwoAnswer");
+                this.setTimes("questionTwoThink");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 7) {
-                this.setTimes("questionThreeThink");
+                this.setTimes("questionTwoAnswer");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(30, 15);
             } else if (state === 8) {
-                this.setTimes("questionThreeAnswer");
+                this.setTimes("questionThreeThink");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 9) {
-                this.setTimes("questionFourThink");
+                this.setTimes("questionThreeAnswer");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(30, 15);
             } else if (state === 10) {
-                this.setTimes("questionFourAnswer");
+                this.setTimes("questionFourThink");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 11) {
-                this.setTimes("questionFiveThink");
+                this.setTimes("questionFourAnswer");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(30, 15);
             } else if (state === 12) {
-                this.setTimes("questionFiveAnswer");
+                this.setTimes("questionFiveThink");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 13) {
-                this.setTimes("rorschachAnnouncement");
+                this.setTimes("questionFiveAnswer");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 14) {
-                this.setTimes("rorschachOneThink");
+                this.setTimes("rorschachAnnouncement");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 15) {
-                this.setTimes("rorschachOneAnswer");
+                this.setTimes("rorschachOneThink");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(180, 90);
             } else if (state === 16) {
+                this.setTimes("rorschachOneAnswer");
+                this.showButton = false;
+                this.$refs.timer.resetTimer(60, 30);
+            } else if (state === 17) {
                 this.setTimes("rorschachTwoThink");
                 this.showButton = false;
-                this.$refs.timer.resetTimer(60,30);
-            } else if (state === 17) {
-                this.setTimes("rorschachTwoAnswer");
-                this.showButton = false;
-                this.$refs.timer.resetTimer(180, 90);
+                this.$refs.timer.resetTimer(180,90);
             } else if (state === 18) {
-                this.setTimes("rorschachThreeThink");
+                this.setTimes("rorschachTwoAnswer");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 19) {
-                this.setTimes("rorschachThreeAnswer");
+                this.setTimes("rorschachThreeThink");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(180, 90);
             } else if (state === 20) {
-                this.setTimes("rorschachFourThink");
+                this.setTimes("rorschachThreeAnswer");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 21) {
-                this.setTimes("rorschachFourAnswer");
+                this.setTimes("rorschachFourThink");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(180, 90);
             } else if (state === 22) {
-                this.setTimes("rorschachFiveThink");
+                this.setTimes("rorschachFourAnswer");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(60, 30);
             } else if (state === 23) {
-                this.setTimes("rorschachFiveAnswer");
+                this.setTimes("rorschachFiveThink");
                 this.showButton = false;
                 this.$refs.timer.resetTimer(180, 90);
             } else if (state === 24) {
                 await this.stopRecording();
-                this.showButton = true;
-                this.setTimes("end");
+                this.setTimes("rorschachFiveAnswer");
                 this.formData.append("times", this.timesCrate())
+                this.showButton = true;
             } else if (state === 25) {
                 if (value !== undefined) {
                     this.formData.append("answer", value);
@@ -693,8 +693,9 @@ export default {
         setTimes(key) {
             if (key === "start") {
                 this.time = new Date().getTime();
+            } else {
+                this.times[key] = new Date().getTime() - this.time;
             }
-            this.times[key] = new Date().getTime() - this.time;
         },
         async startRecording() {
             try {
